@@ -5,6 +5,7 @@ import {
   CardContent,
   Typography,
   Grid,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -16,8 +17,9 @@ import {
 import {
   LineChart,
   Line,
-  BarChart,
-  Bar,
+  PieChart,
+  Pie,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -30,38 +32,52 @@ import {
 const analyticsData = [
   { title: "Total Users", value: 1200 },
   { title: "Active Users", value: 980 },
-  { title: "Revenue", value: "$15,230" },
-  { title: "New Signups", value: 85 },
+  { title: "Total Roles", value: 10 },
+  { title: "Recent Activities", value: 30 },
 ];
 
-const chartData = [
-  { month: "Jan", revenue: 4000, users: 2400 },
-  { month: "Feb", revenue: 3000, users: 2210 },
-  { month: "Mar", revenue: 2000, users: 2290 },
-  { month: "Apr", revenue: 2780, users: 2000 },
-  { month: "May", revenue: 1890, users: 2181 },
-  { month: "Jun", revenue: 2390, users: 2500 },
+const userGrowthData = [
+  { month: "Jan", users: 400 },
+  { month: "Feb", users: 500 },
+  { month: "Mar", users: 600 },
+  { month: "Apr", users: 700 },
+  { month: "May", users: 800 },
+  { month: "Jun", users: 900 },
+];
+
+const roleDistributionData = [
+  { name: "Admin", value: 4 },
+  { name: "User", value: 6 },
 ];
 
 const recentActivity = [
-  { id: 1, user: "John Doe", action: "Created an account", date: "2024-11-20" },
   {
-    id: 2,
-    user: "Jane Smith",
-    action: "Purchased a product",
-    date: "2024-11-21",
+    id: 1,
+    user: "John Doe",
+    action: "Updated role to Admin",
+    date: "2024-11-20",
   },
-  {
-    id: 3,
-    user: "Alex Johnson",
-    action: "Updated profile",
-    date: "2024-11-22",
-  },
+  { id: 2, user: "Jane Smith", action: "Added a new role", date: "2024-11-21" },
+  { id: 3, user: "Alex Johnson", action: "Removed a user", date: "2024-11-22" },
 ];
 
-const Dash = () => {
+const COLORS = ["#8884d8", "#82ca9d"];
+
+const DashboardData = () => {
   return (
     <Box sx={{ padding: 2 }}>
+      {/* Quick Actions */}
+      <Box
+        sx={{ display: "flex", justifyContent: "flex-end", marginBottom: 2 }}
+      >
+        <Button variant="contained" color="primary" sx={{ marginRight: 1 }}>
+          Add User
+        </Button>
+        <Button variant="contained" color="secondary">
+          Add Role
+        </Button>
+      </Box>
+
       {/* Analytics Cards */}
       <Grid container spacing={2} sx={{ marginBottom: 2 }}>
         {analyticsData.map((item, index) => (
@@ -80,41 +96,55 @@ const Dash = () => {
 
       {/* Charts */}
       <Grid container spacing={2}>
+        {/* User Growth Chart */}
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Revenue Trend
+                User Growth Over Time
               </Typography>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDaDharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
-                  <Line type="monotone" dataKey="users" stroke="#82ca9d" />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                User Growth
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
+                <LineChart data={userGrowthData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="users" fill="#8884d8" />
-                </BarChart>
+                  <Line type="monotone" dataKey="users" stroke="#8884d8" />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Role Distribution Pie Chart */}
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Role Distribution
+              </Typography>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={roleDistributionData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                  >
+                    {roleDistributionData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
@@ -153,4 +183,4 @@ const Dash = () => {
   );
 };
 
-export default Dash;
+export default DashboardData;

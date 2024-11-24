@@ -1,7 +1,8 @@
 import React from "react";
+import RolesList from "../components/roles/RolesList";
 
 const Roles = () => {
-  return <h1>Roles</h1>;
+  return <RolesList />;
 };
 
 export default Roles;
